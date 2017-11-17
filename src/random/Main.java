@@ -3,35 +3,37 @@ package random;
 import java.util.Scanner;
 
 public class Main {
-
+	
 	public static void main(String[] args) {
 		
-		int n,a,c,m,i;
-		double seed1,seed2;
-		Scanner scanner=new Scanner(System.in);
-		System.out.println("seed1=");
-		seed1=scanner.nextDouble();
-		System.out.println("seed2=");
-		seed2=scanner.nextDouble();
-		System.out.println("n=");
-		n=scanner.nextInt();
-		System.out.println("a=");
-		a=scanner.nextInt();
-		System.out.println("c=");
-		c=scanner.nextInt();
-		System.out.println("m=");
-		m=scanner.nextInt();
-		LCG lcg;
-		lcg= new LCG(seed1,n,a,c,m);
-		MiddleSquare middleSquare;
-		middleSquare= new MiddleSquare(seed2);
-		scanner.close();
-		for(i=0;i<=10;i++) {
-			lcg.next();
-		}
-		for(i=0;i<=10;i++) {
-			middleSquare.next();
-		}
-	}
+		Generator middleSquare  = new MiddleSquare(5197);
+		Generator lcg  = new LCG(27, 17, 43, 100);
+		Generator def = new Default();
+		Generator poisson = new Poisson(100, 26.0f);
+		Generator binomial = new Binomial(10,0.2f);
+		
+		CGenerator generate = new CGenerator();
+		generate.run(middleSquare);
+		generate.run(lcg);
+		generate.run(def);
+		generate.run(poisson);
+		generate.run(binomial);
 
+		System.out.print("Cate puncte se vor folosi pt evaluare: ");
+		Scanner scanner = new Scanner(System.in);
+		//int nrPuncte;
+		
+		int nrPuncte = scanner.nextInt();
+		
+		scanner.close();
+		
+		Evaluator evaluator1 = new Evaluator(middleSquare);
+		evaluator1.evaluate(nrPuncte);
+		
+		Evaluator evaluator2 = new Evaluator(def);
+		evaluator2.evaluate(nrPuncte);
+		
+		Evaluator evaluator3 = new Evaluator(lcg);
+		evaluator3.evaluate(nrPuncte);
+	}
 }
